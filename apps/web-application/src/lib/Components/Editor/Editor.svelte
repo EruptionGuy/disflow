@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { createEditor } from '@disflow-team/utils';
+	import { createEditor, getGraph } from '@disflow-team/utils';
 	import 'litegraph.js/css/litegraph.css';
 	import { LiteGraph } from 'litegraph.js';
 	import * as Nodes from '$lib/Nodes';
 	import Files from './SidebarComponents/File/Files.svelte';
+	import { changeFile, currentFile } from './SidebarComponents/File/Switch';
 
 	type SidebarTabs = "files";
 	let currentSidebar: SidebarTabs = $state("files");
@@ -14,6 +15,18 @@
 	for (const Node of Object.values(Nodes)) LiteGraph.registerNodeType(Node.buildName(), Node);
 
 	let canvas: HTMLCanvasElement;
+	let isInitialMount = true;
+
+	$effect(() => {
+		if(isInitialMount) {
+			isInitialMount = false;
+			return;
+		}
+		if(currentFile || (!Object.getPrototypeOf(currentFile) && Object.getPrototypeOf(currentFile) !== Object.prototype)) {
+			const editor = getGraph();
+			editor.configure(currentFile, false);
+		}
+	})
 
 	onMount(() => {
 		const rect = canvas.getBoundingClientRect();
@@ -33,15 +46,22 @@
 				'demo_project',
 				JSON.stringify({
 					name: 'demo',
-					index: '',
+					main: '',
 					commands: [
                         {
                             name: "ping",
                             file: ""
                         }
-                    ]
+                    ],
+					lastFile: "main"
 				})
 			);
+		}
+
+		const proj = localStorage.getItem("demo_project")!;
+		const projJ = JSON.parse(proj);
+		if(projJ.lastFile) {
+			if(projJ.lastFile === "main") changeFile(projJ);
 		}
 	});
 </script>

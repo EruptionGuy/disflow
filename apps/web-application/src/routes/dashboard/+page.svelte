@@ -1,1 +1,0 @@
-<div class="w-screen h-[calc(100vh-5rem)] bg-plurple-950"></div>

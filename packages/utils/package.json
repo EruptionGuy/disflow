@@ -9,8 +9,8 @@
     "devDependencies": {
         "@disflow-team/tsconfig": "workspace:^",
         "litegraph.js": "^0.7.18",
-        "tsup": "^8.5.0",
-        "typescript": "^5.8.3"
+        "tsup": "^8.5.1",
+        "typescript": "^5.9.3"
     },
     "scripts": {
         "build": "tsup --config ./tsup.config.ts",

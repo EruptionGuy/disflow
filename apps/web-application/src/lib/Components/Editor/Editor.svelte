@@ -6,11 +6,22 @@
 	import javascript from 'highlight.js/lib/languages/javascript';
 	import 'litegraph.js/css/litegraph.css';
 	import { LiteGraph } from 'litegraph.js';
+	import { JavaScriptGenerator, OnProgramStartNode } from "@disflow-team/code-gen"
+	import { AddNode } from './Nodes/Math/Add';
 
 	let code = '';
 
 	LiteGraph.clearRegisteredTypes();
 	hljs.registerLanguage('javascript', javascript);
+
+	const engine = new JavaScriptGenerator();
+
+	OnProgramStartNode.forEngine(engine);
+	LiteGraph.registerNodeType("Events/Start", OnProgramStartNode)
+	AddNode.forEngine(engine)
+	LiteGraph.registerNodeType(AddNode.buildReferenceName(), AddNode)
+
+	console.log(engine.nodes.keys())
 
 	let canvas: HTMLCanvasElement;
 
@@ -35,7 +46,8 @@
 		<button
 			class="ml-3 bg-blue-950 rounded-xl mt-3 p-3 text-white font-bold cursor-pointer hover:bg-blue-900 transition-colors"
 			on:click={() => {
-				// TODO: Generate Code
+				code = engine.graphToCode(getGraph());
+				console.log(code)
 			}}
 		>
 			Generate Code

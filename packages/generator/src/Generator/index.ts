@@ -1,2 +1,2 @@
-export * from "./GenerationContext";
-export * from "./GenerateCode";
+export * from "./BaseGenerator";
+export * from "./JavaScriptGenerator";

@@ -10,6 +10,8 @@ export class Text extends BaseNode {
 
         this.addWidget("text", "Text", "Your Text", (v) => {
             this.properties.txt = v;
+        }, {
+            property: "txt"
         });
 
         this.addOutput("out", FlowIOTypes.String);

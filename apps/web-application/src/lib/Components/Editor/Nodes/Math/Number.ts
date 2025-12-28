@@ -9,6 +9,8 @@ export class NumberNode extends BaseNode {
         this.addProperty("number", 0, FlowIOTypes.Number)
         this.addWidget("number", "Number", 0, (v) => {
             this.properties.number = v;
+        }, {
+            property: "number"
         });
         this.addOutput("value", FlowIOTypes.Number);
     }

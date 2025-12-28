@@ -138,6 +138,9 @@ export class JavaScriptGenerator extends BaseGenerator {
             codeString.push(this.executeGeneratorFunction(root)!);
         }
 
+        this.visitedNodes.clear();
+        this.codeCache.clear();
+
         return codeString.join("\n");
     }
 }

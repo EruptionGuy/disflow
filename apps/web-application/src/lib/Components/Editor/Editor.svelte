@@ -7,7 +7,7 @@
 	import 'litegraph.js/css/litegraph.css';
 	import { LiteGraph } from 'litegraph.js';
 	import { JavaScriptGenerator, OnProgramStartNode } from "@disflow-team/code-gen"
-	import { AddNode } from './Nodes/Math/Add';
+	import * as Nodes from "./Nodes";
 
 	let code = '';
 
@@ -18,8 +18,11 @@
 
 	OnProgramStartNode.forEngine(engine);
 	LiteGraph.registerNodeType("Events/Start", OnProgramStartNode)
-	AddNode.forEngine(engine)
-	LiteGraph.registerNodeType(AddNode.buildReferenceName(), AddNode)
+
+	for(const Node of Object.values(Nodes)) {
+		Node.forEngine(engine);
+		LiteGraph.registerNodeType(Node.buildReferenceName(), Node);
+	}
 
 	let canvas: HTMLCanvasElement;
 
@@ -28,13 +31,22 @@
 		canvas.width = rect.width;
 		canvas.height = rect.height;
 
-		createEditor(
+		const { graph } = createEditor(
 			canvas,
 			{},
 			{
 				autoresize: false
 			}
 		);
+
+		// @ts-ignore
+		if(graph._nodes.length === 0) {
+			const node = new OnProgramStartNode();
+
+			node.pos = [canvas.width / 4, canvas.height / 2];
+
+			graph.add(node);
+		}
 	});
 </script>
 

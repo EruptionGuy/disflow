@@ -37,7 +37,7 @@ export class JavaScriptGenerator extends BaseGenerator {
 
             const code = this.executeGeneratorFunction(iNode)!;
             this.codeCache.set(iNode.id, code);
-            return code;
+            return code.trim();
         } finally {
             // delete the nodes from the visited nodes so other branches of the graph can use the code safely
             this.visitedNodes.delete(iNode.id);
@@ -59,7 +59,7 @@ export class JavaScriptGenerator extends BaseGenerator {
     // walk down the execution connections
     statementToCode(node: BaseNode, outputIndex: number): string {
         let finalCode = "";
-        const oNodes = node.getOutputNodes(outputIndex) as BaseNode[];
+        const oNodes = node.getOutputNodes(outputIndex) as BaseNode[] | null || [];
         const oInfo = node.getOutputInfo(outputIndex);
 
         if (!oInfo || !BaseGenerator.isExecutionPin(oInfo.type) || oNodes.length === 0 || oInfo.links.length > 1) {
@@ -78,7 +78,7 @@ export class JavaScriptGenerator extends BaseGenerator {
 
         finalCode += `\n${this.walkDownStream(oNode)}`;
 
-        return node.indentExec ? this.indent(finalCode) : finalCode;
+        return (node.indentExec ? this.indent(finalCode) : finalCode).trimEnd();
     }
 
     /**

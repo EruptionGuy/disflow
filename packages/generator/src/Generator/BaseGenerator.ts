@@ -1,6 +1,7 @@
 import type { LGraph } from "litegraph.js";
 import { BaseNode } from "../nodes";
-import { LiteGraph, type INodeInputSlot } from "litegraph.js";
+import { LiteGraph } from "litegraph.js";
+import { FlowIOTypes } from "../types";
 
 export enum GenerationErrorType {
     Arbitrary,
@@ -24,7 +25,7 @@ export abstract class BaseGenerator {
     abstract graphToCode(graph: LGraph): string;
 
     static isExecutionPin(type: string | number): boolean {
-        return type === LiteGraph.ACTION || type === LiteGraph.EVENT || type === -1;
+        return type === LiteGraph.ACTION || type === LiteGraph.EVENT || type === -1 || type === FlowIOTypes.Flow;
     }
 
     indent(str: string) {

@@ -1,5 +1,15 @@
-import { INodeInputSlot, LGraphNode, LiteGraph } from "litegraph.js";
+import { INodeInputSlot, LGraphNode, LiteGraph, INodeOutputSlot } from "litegraph.js";
 import { BaseGenerator } from "../Generator";
+import { FlowIOTypes } from "../types";
+
+declare module "litegraph.js" {
+    interface LGraphNode {
+        /* eslint-disable-next-line */
+        onOutputAdded(output: INodeOutputSlot): any;
+        /* eslint-disable-next-line */
+        onInputAdded(input: INodeInputSlot): any;
+    }
+}
 
 export abstract class BaseNode extends LGraphNode {
     static title: string;
@@ -16,12 +26,8 @@ export abstract class BaseNode extends LGraphNode {
         const childNode = (this.constructor as typeof BaseNode);
 
         if (!childNode.noFlows) {
-            this.addInput("exec", LiteGraph.ACTION, {
-                shape: LiteGraph.ARROW_SHAPE
-            });
-            this.addOutput("exec", LiteGraph.EVENT, {
-                shape: LiteGraph.ARROW_SHAPE
-            });
+            this.addInput("exec", FlowIOTypes.Flow);
+            this.addOutput("exec", FlowIOTypes.Flow);
         }
 
         this.onBuild();
@@ -62,6 +68,14 @@ export abstract class BaseNode extends LGraphNode {
         }
 
         return true;
+    }
+
+    onOutputAdded(output: INodeOutputSlot) {
+        if(BaseGenerator.isExecutionPin(output.type)) output.shape = LiteGraph.ARROW_SHAPE;
+    }
+
+    onInputAdded(input: INodeInputSlot) {
+        if(BaseGenerator.isExecutionPin(input.type)) input.shape = LiteGraph.ARROW_SHAPE;
     }
 
     /**

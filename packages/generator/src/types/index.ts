@@ -1,12 +1,11 @@
 export const FlowIOTypes = {
     String: "string",
     Number: "number",
-    Flow: "flow",
     Object: "object",
-    DiscordClient: "client",
     Array: "array",
     Any: "*",
-    Boolean: "boolean"
+    Boolean: "boolean",
+    Flow: "EXEC_FLOW"
 } as const;
 
 export type FlowIOTypes = (typeof FlowIOTypes)[keyof typeof FlowIOTypes];

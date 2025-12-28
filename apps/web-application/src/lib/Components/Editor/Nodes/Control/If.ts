@@ -1,11 +1,12 @@
 import { BaseGenerator, BaseNode, FlowIOTypes } from "@disflow-team/code-gen";
-import { LiteGraph } from "litegraph.js";
+import { NodeCategoryColor } from "../Colors";
 
 export class If extends BaseNode {
     static title: string = "If";
     static category: string = "Control";
 
     protected onBuild(): void {
+        this.setNodeColor(NodeCategoryColor.Logic);
         this.addInput("condition", FlowIOTypes.Boolean);
 
         this.addOutput("then", FlowIOTypes.Flow);

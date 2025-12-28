@@ -6,8 +6,8 @@
 	import javascript from 'highlight.js/lib/languages/javascript';
 	import 'litegraph.js/css/litegraph.css';
 	import { LiteGraph } from 'litegraph.js';
-	import { JavaScriptGenerator, OnProgramStartNode } from "@disflow-team/code-gen"
-	import * as Nodes from "./Nodes";
+	import { JavaScriptGenerator, OnProgramStartNode } from '@disflow-team/code-gen';
+	import * as Nodes from './Nodes';
 
 	let code = '';
 
@@ -17,14 +17,15 @@
 	const engine = new JavaScriptGenerator();
 
 	OnProgramStartNode.forEngine(engine);
-	LiteGraph.registerNodeType("Events/Start", OnProgramStartNode)
+	LiteGraph.registerNodeType('Events/Start', OnProgramStartNode);
 
-	for(const Node of Object.values(Nodes)) {
+	for (const Node of Object.values(Nodes)) {
 		Node.forEngine(engine);
 		LiteGraph.registerNodeType(Node.buildReferenceName(), Node);
 	}
 
 	let canvas: HTMLCanvasElement;
+	let dialog: HTMLDialogElement;
 
 	onMount(() => {
 		const rect = canvas.getBoundingClientRect();
@@ -40,7 +41,7 @@
 		);
 
 		// @ts-ignore
-		if(graph._nodes.length === 0) {
+		if (graph._nodes.length === 0) {
 			const node = new OnProgramStartNode();
 
 			node.pos = [canvas.width / 4, canvas.height / 2];
@@ -51,21 +52,27 @@
 </script>
 
 <div class="flex h-[calc(100vh-5rem)] w-screen">
-	<canvas bind:this={canvas} class="h-full w-1/2"></canvas>
-	<div class="bg-gray-950 h-full w-1/2">
-		<button
-			class="ml-3 bg-blue-950 rounded-xl mt-3 p-3 text-white font-bold cursor-pointer hover:bg-blue-900 transition-colors"
-			on:click={() => {
-				code = hljs.highlight(engine.graphToCode(getGraph()), {
-					language: "javascript"
-				}).value;
-			}}
-		>
-			Generate Code
-		</button>
-
-		<div class="mt-5 overflow-auto p-3 text-gray-400 bg-gray-900 h-9/12 w-11/12 rounded-lg mx-auto">
-			<pre><code>{@html code}</code></pre>
-		</div>
-	</div>
+	<button
+		class="absolute top-24 right-11 bg-blue-700 rounded-lg p-2"
+		onclick={() => {
+			code = hljs.highlight(engine.graphToCode(getGraph()), { language: "javascript" }).value;
+			dialog.showModal();
+		}}>Generate Code</button
+	>
+	<canvas bind:this={canvas} class="h-full w-screen"></canvas>
 </div>
+
+<dialog
+	bind:this={dialog}
+	open={false}
+	class="h-[calc(100vh-5rem)] max-w-[100vw] p-3 w-screen absolute top-20 left-0 bg-gray-900"
+>
+	<div class="w-11/12 h-11/12 mx-auto rounded-md bg-gray-950 p-3 text-gray-400">
+		<pre><code>{@html code}</code></pre>
+	</div>
+	<div class="w-11/12 h-1/12 mx-auto flex items-center">
+		<button class="bg-blue-700 py-2 px-6 rounded-md" onclick={() => {
+			dialog.close();
+		}}>Close</button>
+	</div>
+</dialog>

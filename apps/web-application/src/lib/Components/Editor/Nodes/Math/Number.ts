@@ -1,4 +1,5 @@
-import { BaseGenerator, BaseNode, FlowIOTypes } from "@disflow-team/code-gen";
+import { BaseNode, FlowIOTypes } from "@disflow-team/code-gen";
+import { NodeCategoryColor } from "../Colors";
 
 export class NumberNode extends BaseNode {
     static title: string = "Number";
@@ -6,6 +7,7 @@ export class NumberNode extends BaseNode {
     static noFlows: boolean = true;
 
     protected onBuild(): void {
+        this.setNodeColor(NodeCategoryColor.Math);
         this.addProperty("number", 0, FlowIOTypes.Number)
         this.addWidget("number", "Number", 0, (v) => {
             this.properties.number = v;

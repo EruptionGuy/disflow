@@ -1,4 +1,5 @@
 import { BaseGenerator, BaseNode, FlowIOTypes } from "@disflow-team/code-gen";
+import { NodeCategoryColor } from "../Colors";
 
 export class Equal extends BaseNode {
     static title: string = "Equal";
@@ -6,6 +7,7 @@ export class Equal extends BaseNode {
     static noFlows: boolean = true;
 
     protected onBuild(): void {
+        this.setNodeColor(NodeCategoryColor.Logic);
         this.addInput("A", FlowIOTypes.Any);
         this.addInput("B", FlowIOTypes.Any);
 

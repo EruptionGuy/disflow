@@ -22,7 +22,7 @@ export abstract class BaseNode extends LGraphNode {
 
     constructor() {
         super();
-
+        
         const childNode = (this.constructor as typeof BaseNode);
 
         if (!childNode.noFlows) {
@@ -34,6 +34,15 @@ export abstract class BaseNode extends LGraphNode {
 
         this.title = childNode.title;
         this.category = childNode.category;
+    }
+
+    private generateBgColor(color: string) {
+        return color + "BB";
+    }
+
+    setNodeColor(hexadecimal: string) {
+        this.color = hexadecimal;
+        this.bgcolor = this.generateBgColor(hexadecimal);
     }
 
     static buildReferenceName() {

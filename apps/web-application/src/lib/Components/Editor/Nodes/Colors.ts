@@ -1,3 +1,5 @@
+import { FlowIOTypes } from "@disflow-team/code-gen";
+
 export enum NodeCategoryColor {
     // Deep Crimson
     Events = "#661111",
@@ -13,4 +15,14 @@ export enum NodeCategoryColor {
     Actions = "#111111",
     // Slate
     Default = "#222222"
+}
+
+export enum FlowIOColor {
+    String = "#F1C40F",
+    Number = "#2ECC71",
+    Object = "#3498DB",
+    Array = "#9B59B6",
+    Any = "#95A5A6",
+    Boolean = "#E74C3C",
+    Flow = "#ECF0F1"       
 }

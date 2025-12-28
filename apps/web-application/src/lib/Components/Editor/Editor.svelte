@@ -5,9 +5,11 @@
 	import 'highlight.js/styles/vs.css';
 	import javascript from 'highlight.js/lib/languages/javascript';
 	import 'litegraph.js/css/litegraph.css';
-	import { LiteGraph } from 'litegraph.js';
+	import { LGraphCanvas, LiteGraph } from 'litegraph.js';
 	import { JavaScriptGenerator, OnProgramStartNode } from '@disflow-team/code-gen';
+	import { FlowIOTypes } from '@disflow-team/code-gen';
 	import * as Nodes from './Nodes';
+	import { FlowIOColor } from './Nodes/Colors';
 
 	let code = '';
 
@@ -27,18 +29,31 @@
 	let canvas: HTMLCanvasElement;
 	let dialog: HTMLDialogElement;
 
+	let flowColors: Record<string, string> = {};
+
+	const flowValues = Object.values(FlowIOTypes);
+	Object.keys(FlowIOTypes).forEach((v, i) => {
+		// @ts-expect-error
+		flowColors[flowValues[i]] = FlowIOColor[v];
+	});
+
 	onMount(() => {
 		const rect = canvas.getBoundingClientRect();
 		canvas.width = rect.width;
 		canvas.height = rect.height;
 
-		const { graph } = createEditor(
+		const { graph, canvas: c } = createEditor(
 			canvas,
 			{},
 			{
 				autoresize: false
 			}
 		);
+		
+		c.frame = 30;
+		c.zoom_modify_alpha = false;
+
+		Object.assign(LGraphCanvas.link_type_colors, flowColors);
 
 		// @ts-ignore
 		if (graph._nodes.length === 0) {

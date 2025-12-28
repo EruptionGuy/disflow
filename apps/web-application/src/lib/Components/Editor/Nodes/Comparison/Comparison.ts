@@ -12,30 +12,25 @@ const controls = {
     "OR": "||"
 }
 
-export class If extends BaseNode {
-    static title: string = "If";
-    static category: string = "Control";
+export class Compare extends BaseNode {
+    static title: string = "Comparison";
+    static category: string = "Comparison";
+    static noFlows: boolean = true;
 
     protected onBuild(): void {
         this.setNodeColor(NodeCategoryColor.Logic);
-
         this.addInput("A", FlowIOTypes.Any);
         this.addInput("B", FlowIOTypes.Any);
 
-        this.addOutput("then", FlowIOTypes.Flow);
-
-        this.addProperty("useElse", false, FlowIOTypes.Boolean);
         this.addProperty("operator", "=", FlowIOTypes.String);
-
-        this.addWidget("toggle", "Use Else", this.properties.useElse as boolean, (value) => {
-            this.setProperty("useElse", value as boolean);
-            this.updateElseOutput();
-        })
 
         this.addWidget('combo', "Operator", "=", (value) => {
             if (["AND", "OR"].includes(value)) {
                 this.inputs[1].type = FlowIOTypes.Boolean;
                 this.inputs[2].type = FlowIOTypes.Boolean;
+            } else if (["<", ">", "≥", "≤"].includes(value)) {
+                this.inputs[1].type = FlowIOTypes.Number;
+                this.inputs[2].type = FlowIOTypes.Number;
             } else {
                 this.inputs[1].type = FlowIOTypes.Any;
                 this.inputs[2].type = FlowIOTypes.Any;
@@ -46,10 +41,10 @@ export class If extends BaseNode {
             if (this.graph) {
                 for (let i = 0; i < inputs.length; i++) {
                     const input = inputs[i];
-                    if(!input.link) continue;
+                    if (!input.link) continue;
                     const linkData = this.graph.links[input.link];
                     const origin = this.graph.getNodeById(linkData.origin_id);
-                    if(!origin) continue;
+                    if (!origin) continue;
                     const originSlot = linkData.origin_slot;
 
                     this.disconnectInput(i + 1);
@@ -62,27 +57,14 @@ export class If extends BaseNode {
             values: Object.keys(controls),
             property: "operator"
         })
-    }
 
-    updateElseOutput() {
-        // 0 is execution pin, 1 is then and 2 is else
-        const elseIndex = 2;
-
-        if (this.properties.useElse && this.outputs.length < 3) {
-            this.addOutput("else", FlowIOTypes.Flow);
-        } else if (this.outputs.length > 2) {
-            this.removeOutput(elseIndex);
-        }
+        this.addOutput("out", FlowIOTypes.Boolean);
     }
 
     nodeToCode(generator: BaseGenerator): string {
-        const then = generator.statementToCode(this, 1);
-        let code = `if(${generator.valueToCode(this, 1)} ${controls[this.properties.operator as keyof typeof controls]} ${generator.valueToCode(this, 2)}) {\n${then}\n}`;
+        const a = generator.valueToCode(this, 0);
+        const b = generator.valueToCode(this, 1);
 
-        if (this.properties.useElse && this.outputs.at(2) && Number(this.outputs.at(2)!.links?.length) > 0) {
-            code += ` else {\n${generator.statementToCode(this, 2)}\n}`;
-        }
-
-        return code;
+        return `${a} ${controls[this.properties.operator as keyof typeof controls]} ${b}`;
     }
 }

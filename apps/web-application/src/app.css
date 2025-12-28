@@ -49,10 +49,22 @@
     }
 
     .litesearchbox .helper {
-        @apply px-[1px]! bg-[#404040]!
+        @apply px-px! bg-[#404040]!
     }
 
     .litesearchbox .lite-search-item {
-        @apply px-2! my-[2px]! rounded-sm!
+        @apply px-2! my-0.5! rounded-sm!
+    }
+    
+    .graphdialog {
+        @apply text-white! p-3! bg-[#222222]!
+    }
+
+    .graphdialog button {
+        @apply rounded-md! px-2! text-center! ml-3! hover:bg-[#404040]! bg-[#444444]! transition-colors! cursor-pointer!
+    }
+
+    .graphdialog input {
+        @apply rounded-md! bg-[#444444]!
     }
 }

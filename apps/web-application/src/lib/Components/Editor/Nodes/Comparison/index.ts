@@ -1,1 +1,1 @@
-export * from "./Equal";
+export * from "./Comparison";

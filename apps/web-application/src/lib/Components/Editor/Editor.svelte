@@ -55,7 +55,7 @@
 	<button
 		class="absolute top-24 right-11 bg-blue-700 rounded-lg p-2"
 		onclick={() => {
-			code = hljs.highlight(engine.graphToCode(getGraph()), { language: "javascript" }).value;
+			code = hljs.highlight(engine.graphToCode(getGraph()), { language: 'javascript' }).value;
 			dialog.showModal();
 		}}>Generate Code</button
 	>
@@ -71,8 +71,11 @@
 		<pre><code>{@html code}</code></pre>
 	</div>
 	<div class="w-11/12 h-1/12 mx-auto flex items-center">
-		<button class="bg-blue-700 py-2 px-6 rounded-md" onclick={() => {
-			dialog.close();
-		}}>Close</button>
+		<button
+			class="bg-blue-700 py-2 px-6 rounded-md"
+			onclick={() => {
+				dialog.close();
+			}}>Close</button
+		>
 	</div>
 </dialog>

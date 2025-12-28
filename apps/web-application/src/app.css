@@ -9,15 +9,50 @@
     .landing-flows {
         @apply w-52 h-32 rounded-xl
     }
+
     .scale-container {
         @apply lg:w-[70%] lg:left-[15%] h-[70%] md:w-[70%] md:left-[15%] lg:top-[15%] md:top-[15%] w-full left-0 z-20
     }
-}
 
-.custom-shadow-blue {
-    box-shadow: 0 0 30px oklch(70.7% 0.165 254.624);
-}
+    /* main menu container */
+    .litecontextmenu {
+        @apply bg-[#222222]! border! border-[#444444]! rounded-lg! shadow-2xl! py-1! font-sans! min-w-20!;
+    }
 
-.custom-shadow-yellow {
-    box-shadow: 0 0 30px yellow;
+    /* menu items */
+    .litecontextmenu .litemenu-entry {
+        @apply text-[#eeeeee]! px-5! py-1! mx-1! my-0.5! rounded! text-sm! transition-colors! duration-200! cursor-pointer!;
+    }
+
+    /* add hover animation to main menu and menu items */
+    .litecontextmenu .litemenu-entry:hover {
+        @apply bg-[#336699]! text-white!;
+    }
+
+    /* add seperators */
+    .litecontextmenu .litemenu-entry.separator {
+        @apply my-1! border-b! border-[#444444]! h-0! p-0!;
+    }
+
+    /* selected items */
+    .litecontextmenu .litemenu-entry.selected {
+        @apply bg-[#444444]!;
+    }
+
+    /* The search box */
+    .litesearchbox {
+        @apply bg-[#444444]! rounded-sm! text-gray-200!
+    }
+
+    .litesearchbox input {
+        @apply rounded-sm! bg-[#404040]!
+    }
+
+    .litesearchbox .helper {
+        @apply px-[1px]! bg-[#404040]!
+    }
+
+    .litesearchbox .lite-search-item {
+        @apply px-2! my-[2px]! rounded-sm!
+    }
 }

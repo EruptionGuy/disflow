@@ -1,4 +1,4 @@
-import { LGraphNode, LiteGraph } from "litegraph.js";
+import { INodeInputSlot, LGraphNode, LiteGraph } from "litegraph.js";
 import { BaseGenerator } from "../Generator";
 
 export abstract class BaseNode extends LGraphNode {
@@ -16,8 +16,12 @@ export abstract class BaseNode extends LGraphNode {
         const childNode = (this.constructor as typeof BaseNode);
 
         if (!childNode.noFlows) {
-            this.addInput("exec", LiteGraph.ACTION);
-            this.addOutput("exec", LiteGraph.EVENT);
+            this.addInput("exec", LiteGraph.ACTION, {
+                shape: LiteGraph.ARROW_SHAPE
+            });
+            this.addOutput("exec", LiteGraph.EVENT, {
+                shape: LiteGraph.ARROW_SHAPE
+            });
         }
 
         this.onBuild();
@@ -42,6 +46,22 @@ export abstract class BaseNode extends LGraphNode {
 
     buildReferenceName() {
         return `${this.category}/${this.title}`;
+    }
+
+    onConnectOutput(outputIndex: number, inputType: INodeInputSlot["type"]): boolean {
+        const isExec = BaseGenerator.isExecutionPin(inputType);
+
+        if (isExec) {
+            const output = this.outputs[outputIndex];
+
+            if (output.links && output.links.length > 0) {
+                for (const linkId of output.links) {
+                    this.graph?.removeLink(linkId);
+                }
+            }
+        }
+
+        return true;
     }
 
     /**

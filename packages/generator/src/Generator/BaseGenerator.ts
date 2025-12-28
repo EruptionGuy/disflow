@@ -1,8 +1,20 @@
 import type { LGraph } from "litegraph.js";
 import { BaseNode } from "../nodes";
-import { LiteGraph } from "litegraph.js";
+import { LiteGraph, type INodeInputSlot } from "litegraph.js";
 
-export class GenerationError extends Error {}
+export enum GenerationErrorType {
+    Arbitrary,
+    CircularDependency
+}
+
+export class GenerationError extends Error {
+    errorType: GenerationErrorType;
+
+    constructor(message: string, errorType: GenerationErrorType = GenerationErrorType.Arbitrary) {
+        super(message);
+        this.errorType = errorType;
+    }
+}
 
 export abstract class BaseGenerator {
     nodes = new Map<string, (node: BaseNode, gen: BaseGenerator) => string>();
@@ -11,7 +23,7 @@ export abstract class BaseGenerator {
     abstract statementToCode(node: BaseNode, inputIndex: number): string;
     abstract graphToCode(graph: LGraph): string;
 
-    isExecutionPin(type: string | number): boolean {
+    static isExecutionPin(type: string | number): boolean {
         return type === LiteGraph.ACTION || type === LiteGraph.EVENT || type === -1;
     }
 
@@ -20,7 +32,7 @@ export abstract class BaseGenerator {
     }
 
     getExecOutputNode(node: BaseNode): BaseNode | null {
-        const outputData = node.outputs.findIndex((output) => output.name === "exec" && this.isExecutionPin(output.type));
+        const outputData = node.outputs.findIndex((output) => output.name === "exec" && BaseGenerator.isExecutionPin(output.type));
         if (outputData === -1) return null;
         const outputNode = node.getOutputNodes(outputData) as BaseNode[] | null;
 

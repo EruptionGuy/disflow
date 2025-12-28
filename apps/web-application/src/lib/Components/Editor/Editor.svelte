@@ -21,8 +21,6 @@
 	AddNode.forEngine(engine)
 	LiteGraph.registerNodeType(AddNode.buildReferenceName(), AddNode)
 
-	console.log(engine.nodes.keys())
-
 	let canvas: HTMLCanvasElement;
 
 	onMount(() => {
@@ -46,8 +44,9 @@
 		<button
 			class="ml-3 bg-blue-950 rounded-xl mt-3 p-3 text-white font-bold cursor-pointer hover:bg-blue-900 transition-colors"
 			on:click={() => {
-				code = engine.graphToCode(getGraph());
-				console.log(code)
+				code = hljs.highlight(engine.graphToCode(getGraph()), {
+					language: "javascript"
+				}).value;
 			}}
 		>
 			Generate Code

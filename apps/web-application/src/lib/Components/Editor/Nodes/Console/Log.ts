@@ -21,7 +21,7 @@ export class Log extends BaseNode {
     }
 
     nodeToCode(generator: BaseGenerator): string {
-        const logValue = generator.valueToCode(this, 1);
+        const logValue = this.properties.content.trim() === "" ? generator.valueToCode(this, 1) : `"${this.properties.content.trim()}"`;
 
         return `console.log(${logValue});`;
     }

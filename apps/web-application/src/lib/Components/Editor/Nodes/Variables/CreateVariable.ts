@@ -5,7 +5,6 @@ const controls = {
     "let": "let",
     "const": "const",
     "var": "var",
-    "set": "",
 }
 
 export class CreateVariable extends BaseNode {
@@ -33,9 +32,19 @@ export class CreateVariable extends BaseNode {
     }
 
     nodeToCode(generator: BaseGenerator): string {
-        if (this.inputs[1].link != null) {
-            return `${controls[this.properties.keyword as keyof typeof controls]} ${this.properties.name} = ${generator.valueToCode(this, 1)};`;
-        } else
-            return `${controls[this.properties.keyword as keyof typeof controls]} ${this.properties.name};`;
+        const keyword = controls[this.properties.keyword as keyof typeof controls];
+        const valueInput = this.inputs.find(i => i.name === "value");
+        const hasValue = valueInput?.link != null;
+    
+        if (keyword === "const" && !hasValue) {
+            return `const ${this.properties.name} = undefined;`;
+        }
+    
+        if (hasValue) {
+            return `${keyword} ${this.properties.name} = ${generator.valueToCode(this, 1)};`;
+        }
+    
+        return `${keyword} ${this.properties.name};`;
     }
+    
 }

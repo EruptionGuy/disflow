@@ -20,6 +20,6 @@ export class Text extends BaseNode {
     }
 
     nodeToCode(): string {
-        return `"${this.properties.txt || "Your Text"}"`
+        return JSON.stringify(this.properties.txt ?? "Your Text");
     }
 }

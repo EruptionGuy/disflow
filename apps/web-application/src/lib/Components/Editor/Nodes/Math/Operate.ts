@@ -14,7 +14,7 @@ export class Operate extends BaseNode {
     static noFlows: boolean = true;
 
     protected onBuild(): void {
-        this.setNodeColor(NodeCategoryColor.Math);
+        this.setNodeColor(NodeCategoryColor.Maths);
         this.addInput("A", FlowIOTypes.Number);
         this.addInput("B", FlowIOTypes.Number);
 

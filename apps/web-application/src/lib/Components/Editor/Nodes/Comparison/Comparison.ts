@@ -18,7 +18,7 @@ export class Compare extends BaseNode {
     static noFlows: boolean = true;
 
     protected onBuild(): void {
-        this.setNodeColor(NodeCategoryColor.Logic);
+        this.setNodeColor(NodeCategoryColor.Comparison);
         this.addInput("A", FlowIOTypes.Any);
         this.addInput("B", FlowIOTypes.Any);
 

@@ -17,7 +17,7 @@ export class If extends BaseNode {
     static category: string = "Control";
 
     protected onBuild(): void {
-        this.setNodeColor(NodeCategoryColor.Logic);
+        this.setNodeColor(NodeCategoryColor.Control);
 
         this.addInput("A", FlowIOTypes.Any);
         this.addInput("B", FlowIOTypes.Any);

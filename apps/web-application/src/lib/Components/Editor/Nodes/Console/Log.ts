@@ -6,7 +6,7 @@ export class Log extends BaseNode {
     static category: string = "Console";
 
     protected onBuild(): void {
-        this.setNodeColor(NodeCategoryColor.Actions);
+        this.setNodeColor(NodeCategoryColor.Console);
         this.addInput("content", FlowIOTypes.Any);
         this.addProperty("content", "", FlowIOTypes.String);
 

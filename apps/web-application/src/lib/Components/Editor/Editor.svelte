@@ -24,7 +24,6 @@
 
 		if (element && element.classList.contains('has_submenu')) {
 			const key = name.replaceAll(" ", "");
-			console.log(`${key}: ${key in NodeCategoryColor}`)
 			if (key in NodeCategoryColor) {
 				
 				const color = NodeCategoryColor[key as keyof typeof NodeCategoryColor];

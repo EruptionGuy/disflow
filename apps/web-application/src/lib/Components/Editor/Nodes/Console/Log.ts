@@ -7,12 +7,12 @@ export class Log extends BaseNode {
 
     protected onBuild(): void {
         this.setNodeColor(NodeCategoryColor.Console);
-        this.addInput("content", FlowIOTypes.Any);
-        this.addProperty("content", "", FlowIOTypes.String);
+        this.addInput("Content", FlowIOTypes.Any);
+        this.addProperty("content", "Hello, World!", FlowIOTypes.String);
 
-        this.addWidget("text", "Content", "", (v: string) => {
-            if(v.trim() === "") this.addInput("content", FlowIOTypes.Any);
-            else this.removeInput(1);
+        this.addWidget("text", "Content", "Hello, World!", (v: string) => {
+            // if(v.trim() === "") this.addInput("content", FlowIOTypes.Any);
+            // else this.removeInput(1);
 
             this.properties.content = v;
         }, {

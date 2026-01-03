@@ -14,7 +14,7 @@ export class Variable extends BaseNode {
         }, {
             property: "name"
         });
-        this.addOutput("value", FlowIOTypes.Any);
+        this.addOutput("Value", FlowIOTypes.Any);
     }
 
     nodeToCode(): string {

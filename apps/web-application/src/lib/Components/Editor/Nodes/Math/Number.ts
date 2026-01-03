@@ -14,7 +14,7 @@ export class NumberNode extends BaseNode {
         }, {
             property: "number"
         });
-        this.addOutput("value", FlowIOTypes.Number);
+        this.addOutput("Number", FlowIOTypes.Number);
     }
 
     nodeToCode(): string {

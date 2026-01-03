@@ -58,7 +58,7 @@ export class Compare extends BaseNode {
             property: "operator"
         })
 
-        this.addOutput("out", FlowIOTypes.Boolean);
+        this.addOutput("Number", FlowIOTypes.Boolean);
     }
 
     nodeToCode(generator: BaseGenerator): string {
